@@ -1,0 +1,275 @@
+
+import java.util.ArrayList;
+import java.util.Scanner;
+class Expense {
+ private String category;
+ private double amount;
+ Expense(String category, double amount) {
+ this.category = category;
+ this.amount = amount;
+ }
+ String getCategory() {
+ return category;
+ }
+ double getAmount() {
+ return amount;
+ }
+ void display(int no) {
+ System.out.println(no + ". " + category + " - Rs." + amount);
+ }
+}
+class ExpenseTracker {
+ private double budget;
+ private ArrayList<Expense> expenses = new ArrayList<>();
+ ExpenseTracker(double budget) {
+ this.budget = budget;
+ }
+ void addExpense(String category, double amount) {
+expenses.add(new Expense(category, amount));
+ System.out.println("Expense added successfully!");
+ }
+ double getTotal() {
+ double total = 0;
+ for (Expense e : expenses) {
+ total += e.getAmount();
+ }
+ return total;
+ }
+ void viewExpenses() {
+ if (expenses.isEmpty()) {
+ System.out.println("No expenses found.");
+ return;
+ }
+ System.out.println("\n----- ALL EXPENSES -----");
+ for (int i = 0; i < expenses.size(); i++) {
+ expenses.get(i).display(i + 1);
+ }
+ System.out.println("Total Expense: Rs." + getTotal());
+ }
+ void categorySummary() {
+ double food = 0;
+ double travel = 0;
+ double study = 0;
+ double other = 0;
+ for (Expense e : expenses) {
+ if (e.getCategory().equalsIgnoreCase("Food"))
+ food += e.getAmount();
+ else if (e.getCategory().equalsIgnoreCase("Travel"))
+ travel += e.getAmount();
+else if (e.getCategory().equalsIgnoreCase("Study"))
+ study += e.getAmount();
+ else
+ other += e.getAmount();
+ }
+ System.out.println("\n----- CATEGORY SUMMARY -----");
+ System.out.println("Food : Rs." + food);
+ System.out.println("Travel : Rs." + travel);
+ System.out.println("Study : Rs." + study);
+ System.out.println("Other : Rs." + other);
+ }
+ void searchExpense(String category) {
+ boolean found = false;
+ System.out.println("\n----- SEARCH RESULT -----");
+ for (Expense e : expenses) {
+ if (e.getCategory().equalsIgnoreCase(category)) {
+ System.out.println(
+ e.getCategory() + " - Rs." + e.getAmount()
+ );
+ found = true;
+ }
+ }
+ if (!found)
+ System.out.println("No expense found in this category.");
+ }
+ void deleteExpense(int number) {
+ if (number >= 1 && number <= expenses.size()) {
+ expenses.remove(number - 1);
+ System.out.println("Expense deleted successfully!");
+ } else {
+ System.out.println("Invalid expense number.");
+ }
+ }
+void checkBudget() {
+ double total = getTotal();
+ double balance = budget - total;
+ System.out.println("\n----- BUDGET STATUS -----");
+ System.out.println("Monthly Budget : Rs." + budget);
+ System.out.println("Total Expense : Rs." + total);
+ System.out.println("Balance : Rs." + balance);
+ if (total > budget) {
+ System.out.println("WARNING! Budget exceeded.");
+ } else if (total >= budget * 0.8) {
+ System.out.println("ALERT! 80% of your budget is used.");
+ } else {
+ System.out.println("Good! You are within your budget.");
+ }
+ }
+ void savingSuggestion() {
+ double balance = budget - getTotal();
+ System.out.println("\n----- SMART SUGGESTION -----");
+ if (balance > 0) {
+ System.out.println(
+ "You can save Rs." + balance + " this month."
+ );
+ } else {
+ System.out.println(
+ "Reduce unnecessary expenses and control your spending."
+ );
+ }
+ }
+}
+public class Main {
+ public static void main(String[] args) {
+ Scanner sc = new Scanner(System.in);
+System.out.println("================================");
+ System.out.println(" SMART STUDENT EXPENSE TRACKER");
+ System.out.println("================================");
+ System.out.print("Enter Monthly Budget: Rs.");
+ double budget = sc.nextDouble();
+ ExpenseTracker tracker = new ExpenseTracker(budget);
+ int choice;
+ do {
+ System.out.println("\n===== MENU =====");
+ System.out.println("1. Add Expense");
+ System.out.println("2. View All Expenses");
+ System.out.println("3. Category Summary");
+ System.out.println("4. Search Expense");
+ System.out.println("5. Delete Expense");
+ System.out.println("6. Check Budget");
+ System.out.println("7. Saving Suggestion");
+ System.out.println("8. Exit");
+ System.out.print("Enter your choice: ");
+ choice = sc.nextInt();
+ switch (choice) {
+ case 1:
+ sc.nextLine();
+ System.out.print("Enter Category: ");
+ String category = sc.nextLine();
+ System.out.print("Enter Amount: Rs.");
+ double amount = sc.nextDouble();
+ tracker.addExpense(category, amount);
+ break;
+ case 2:
+tracker.viewExpenses();
+ break;
+ case 3:
+ tracker.categorySummary();
+ break;
+ case 4:
+ sc.nextLine();
+ System.out.print("Enter Category to Search: ");
+ String search = sc.nextLine();
+ tracker.searchExpense(search);
+ break;
+ case 5:
+ tracker.viewExpenses();
+ System.out.print("Enter Expense Number to Delete: ");
+ int number = sc.nextInt();
+ tracker.deleteExpense(number);
+ break;
+ case 6:
+ tracker.checkBudget();
+ break;
+ case 7:
+ tracker.savingSuggestion();
+ break;
+ case 8:
+ System.out.println(
+ "Thank you for using Smart Student Expense Tracker!"
+ );
+ break;
+ default:
+System.out.println("Invalid choice!");
+ }
+ } while (choice != 8);
+ sc.close();
+ }
+}
+Output
+SMART STUDENT EXPENSE TRACKER
+================================
+Enter Monthly Budget: Rs.5000
+===== MENU =====
+1. Add Expense
+2. View All Expenses
+3. Category Summary
+4. Search Expense
+5. Delete Expense
+6. Check Budget
+7. Saving Suggestion
+8. Exit
+Enter your choice: 1
+Enter Category: Food
+Enter Amount: Rs.500
+Expense added successfully!
+===== MENU =====
+1. Add Expense
+2. View All Expenses
+3. Category Summary
+4. Search Expense
+5. Delete Expense
+6. Check Budget
+7. Saving Suggestion
+8. Exit
+Enter your choice: 1
+Enter Category: Travel
+Enter Amount: Rs.1000
+Expense added successfully!
+===== MENU =====
+1. Add Expense
+2. View All Expenses
+3. Category Summary
+4. Search Expense
+5. Delete Expense
+6. Check Budget
+7. Saving Suggestion
+8. Exit
+Enter your choice: 1
+Enter Category: Study
+Enter Amount: Rs.700
+Expense added successfully!
+===== MENU =====
+1. Add Expense
+2. View All Expenses
+3. Category Summary
+4. Search Expense
+5. Delete Expense
+6. Check Budget
+7. Saving Suggestion
+8. Exit
+Enter your choice: 2
+----- ALL EXPENSES -----
+1. Food - Rs.500.0
+2. Travel - Rs.1000.0
+3. Study - Rs.700.0
+Total Expense: Rs.2200.0
+===== MENU =====
+Enter your choice: 3
+----- CATEGORY SUMMARY -----
+Food : Rs.500.0
+Travel : Rs.1000.0
+Study : Rs.700.0
+Other : Rs.0.0
+===== MENU =====
+Enter your choice: 6
+----- BUDGET STATUS -----
+Monthly Budget : Rs.5000.0
+Total Expense : Rs.2200.0
+Balance : Rs.2800.0
+Good! You are within your budget.
+===== MENU =====
+Enter your choice: 4
+Enter Category to Search: Food
+----- SEARCH RESULT -----
+Food - Rs.500.0
+===== MENU =====
+Enter your choice: 7
+----- SMART SUGGESTION -----
+You can save Rs.2800.0 this month.
+===== MENU =====
+Enter your choice: 8
+Thank you for using Smart Student Expense Tracker!
+
+
+
+
